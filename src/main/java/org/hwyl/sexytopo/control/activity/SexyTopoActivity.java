@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
-import android.preference.ListPreference;
 import android.preference.PreferenceManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
@@ -24,6 +23,7 @@ import org.hwyl.sexytopo.control.SurveyManager;
 import org.hwyl.sexytopo.control.io.CompassExporter;
 import org.hwyl.sexytopo.control.io.Loader;
 import org.hwyl.sexytopo.control.io.Saver;
+import org.hwyl.sexytopo.control.io.SVGSketchExporter;
 import org.hwyl.sexytopo.control.io.TherionExporter;
 import org.hwyl.sexytopo.control.io.Util;
 import org.hwyl.sexytopo.model.survey.Survey;
@@ -184,6 +184,11 @@ public abstract class SexyTopoActivity extends ActionBarActivity {
             String datFilename = Util.getPathForSurveyFile(survey.getName(), "dat");
             String datContents = exporter.export(survey);
             Saver.saveFile(datFilename, datContents);
+
+            // SVG sketch
+            SVGSketchExporter svgExporter = new SVGSketchExporter();
+            String svgFilename = Util.getPathForSurveyFile(survey.getName(), "svg");
+            svgExporter.export(survey, svgFilename);
 
         } catch(IOException e) {
             Log.d(SexyTopo.TAG, "Error exporting survey: " + e);
