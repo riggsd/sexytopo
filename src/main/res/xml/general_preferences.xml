@@ -2,16 +2,21 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory
-    android:title="General"
-    android:key="pref_general">
-    <ListPreference
-        android:key="pref_orientation"
-        android:title="Orientation"
-        android:summary="Override device orientation"
-        android:dialogTitle="Select Orientation"
-        android:entries="@array/pref_orientation_options"
-        android:entryValues="@array/pref_orientation_options"
-        android:defaultValue="auto" />
+        android:title="General"
+        android:key="pref_general">
+        <ListPreference
+            android:key="pref_orientation"
+            android:title="Orientation"
+            android:summary="Override device orientation"
+            android:dialogTitle="Select Orientation"
+            android:entries="@array/pref_orientation_options"
+            android:entryValues="@array/pref_orientation_options"
+            android:defaultValue="auto" />
+        <CheckBoxPreference
+            android:key="pref_recognize_backsights"
+            android:title="@string/pref_recognize_backsights"
+            android:summary="@string/pref_recognize_backsights_desc"
+            android:defaultValue="false" />
     </PreferenceCategory>
 
     <PreferenceCategory

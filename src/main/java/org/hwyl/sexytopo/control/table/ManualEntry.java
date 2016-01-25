@@ -37,7 +37,8 @@ public class ManualEntry {
                 new EditCallback() {
                     @Override
                     public void submit(Leg leg, Dialog dialog) {
-                        SurveyUpdater.updateWithNewStation(survey, leg);
+                        SurveyUpdater updater = new SurveyUpdater(survey, tableActivity);
+                        updater.updateWithNewStation(leg);
                         SurveyManager.getInstance(tableActivity).broadcastSurveyUpdated();
                         tableActivity.syncTableWithSurvey();
                     }
@@ -53,7 +54,8 @@ public class ManualEntry {
                 new EditCallback() {
                     @Override
                     public void submit(Leg leg, Dialog dialog) {
-                        SurveyUpdater.update(survey, leg);
+                        SurveyUpdater updater = new SurveyUpdater(survey, tableActivity);
+                        updater.update(leg);
                         SurveyManager.getInstance(tableActivity).broadcastSurveyUpdated();
                         tableActivity.syncTableWithSurvey();
                     }
@@ -77,7 +79,8 @@ public class ManualEntry {
                                     edited.getInclination(),
                                     toEdit.getDestination());
                         }
-                        SurveyUpdater.editLeg(survey, toEdit, edited);
+                        SurveyUpdater updater = new SurveyUpdater(survey, tableActivity);
+                        updater.editLeg(toEdit, edited);
                         SurveyManager.getInstance(tableActivity).broadcastSurveyUpdated();
                         tableActivity.syncTableWithSurvey();
                     }
@@ -101,7 +104,8 @@ public class ManualEntry {
                     @Override
                     public void submit(Leg leg, Dialog dialog) {
                         Station station = survey.getActiveStation();
-                        SurveyUpdater.updateWithNewStation(survey, leg);
+                        SurveyUpdater updater = new SurveyUpdater(survey, tableActivity);
+                        updater.updateWithNewStation(leg);
                         Station newActiveStation = survey.getActiveStation();
                         survey.setActiveStation(station);
                         createLrudIfPresent(survey, station, dialog, R.id.editDistanceLeft, LRUD.LEFT);
@@ -123,7 +127,8 @@ public class ManualEntry {
         Double value = getFieldValue(dialog, fieldId);
         if (value != null) {
             Leg leg = direction.createSplay(survey, station, value);
-            SurveyUpdater.update(survey, leg);
+            SurveyUpdater updater = new SurveyUpdater(survey, dialog.getContext());
+            updater.update(leg);
         }
 
     }
@@ -245,7 +250,8 @@ public class ManualEntry {
                     public void onClick(DialogInterface dialog, int buttonId) {
                         String newName = renameField.getText().toString();
                         try {
-                            SurveyUpdater.renameStation(survey, toRename, newName);
+                            SurveyUpdater updater = new SurveyUpdater(survey, activity);
+                            updater.renameStation(toRename, newName);
                             activity.syncTableWithSurvey();
                         } catch (Exception e) {
                             activity.showSimpleToast("Rename failed");

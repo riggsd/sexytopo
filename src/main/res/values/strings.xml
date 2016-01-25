@@ -103,6 +103,8 @@
     <string name="stats_longest_leg">Longest Leg (m)</string>
     <string name="stats_shortest_leg">Shortest Leg (m)</string>
     <string name="pref_station_symbol">Station symbol</string>
+    <string name="pref_recognize_backsights">Recognize Backsights</string>
+    <string name="pref_recognize_backsights_desc">Automatically recognize and merge foresight/backsight shots</string>
     <string name="position_cross_section_instruction">Select where to draw cross-section</string>
     <string name="warning_survey_not_saved">Warning: current survey not saved</string>
 </resources>

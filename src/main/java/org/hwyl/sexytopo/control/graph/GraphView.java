@@ -447,8 +447,10 @@ private boolean firstTime = true;
             public void onClick(View view) {
                 switch(view.getId()) {
                     case R.id.graph_station_reverse:
-                        SurveyUpdater.reverseLeg(survey, station);
-                        SurveyManager.getInstance(getContext()).broadcastSurveyUpdated();
+                        Context context = getContext();
+                        SurveyUpdater updater = new SurveyUpdater(survey, context);
+                        updater.reverseLeg(station);
+                        SurveyManager.getInstance(context).broadcastSurveyUpdated();
                         invalidate();
                         break;
                     case R.id.graph_station_delete:

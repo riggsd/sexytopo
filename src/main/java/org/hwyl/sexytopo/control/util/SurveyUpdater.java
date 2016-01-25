@@ -1,5 +1,9 @@
 package org.hwyl.sexytopo.control.util;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import org.hwyl.sexytopo.SexyTopo;
 import org.hwyl.sexytopo.control.Log;
 import org.hwyl.sexytopo.model.survey.Leg;
@@ -16,6 +20,8 @@ import java.util.List;
  */
 public class SurveyUpdater {
 
+    public static final String PREF_RECOGNIZE_BACKSIGHTS_KEY = "pref_recognize_backsights";
+
     static {
         //MediaPlayer mediaPlayer = MediaPlayer.create(context, R.raw.sound_file_1);
         //mediaPlayer.start(); // no need to call prepare(); create() does that for you
@@ -26,26 +32,39 @@ public class SurveyUpdater {
     private static final double MAX_BEARING_DIFF = 1;
     private static final double MAX_INCLINATION_DIFF = 1;
 
+    private final Survey survey;
+    private final Context context;
+    private final SharedPreferences preferences;
 
-    public static void update(Survey survey, List<Leg> legs) {
+
+    public SurveyUpdater(Survey survey, Context context) {
+        this.survey = survey;
+        this.context = context;
+        this.preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+
+    public void update(List<Leg> legs) {
         for (Leg leg : legs) {
-            update(survey, leg);
+            update(leg);
         }
     }
 
 
-    public static void update(Survey survey, Leg leg) {
+    public void update(Leg leg) {
         Station activeStation = survey.getActiveStation();
         activeStation.getOnwardLegs().add(leg);
         survey.setSaved(false);
         survey.addUndoEntry(activeStation, leg);
 
-        createNewStationIfBacksight(survey);
-        createNewStationIfTripleShot(survey);
+        if (preferences.getBoolean(PREF_RECOGNIZE_BACKSIGHTS_KEY, false)) {
+            createNewStationIfBacksight();
+        }
+        createNewStationIfTripleShot();
     }
 
 
-    public static void updateWithNewStation(Survey survey, Leg leg) {
+    public void updateWithNewStation(Leg leg) {
         Station activeStation = survey.getActiveStation();
 
         if (!leg.hasDestination()) {
@@ -65,10 +84,9 @@ public class SurveyUpdater {
     /**
      * Examine splays of the current active station to determine if we should promote a
      * "triple-shot" of close-enough splays to a new named station.
-     * @param survey
      * @return <tt>true</tt> if new station was created
      */
-    private static boolean createNewStationIfTripleShot(Survey survey) {
+    private boolean createNewStationIfTripleShot() {
 
         Station activeStation = survey.getActiveStation();
         if (activeStation.getOnwardLegs().size() >= SexyTopo.NUM_OF_REPEATS_FOR_NEW_STATION) {
@@ -100,10 +118,9 @@ public class SurveyUpdater {
     /**
      * Examine splays of the current active station to determine if the previous two were a
      * foreward and backsight; if so, promote to a new named station.
-     * @param survey
      * @return <tt>true</tt> if new station was created
      */
-    private static boolean createNewStationIfBacksight(Survey survey) {
+    private boolean createNewStationIfBacksight() {
 
         Station activeStation = survey.getActiveStation();
         if (activeStation.getOnwardLegs().size() >= 2) {
@@ -134,7 +151,7 @@ public class SurveyUpdater {
     }
 
 
-    public static void editLeg(Survey survey, final Leg toEdit, final Leg edited) {
+    public void editLeg(final Leg toEdit, final Leg edited) {
         SurveyTools.traverse(
                 survey,
                 new SurveyTools.SurveyTraversalCallback() {
@@ -152,7 +169,7 @@ public class SurveyUpdater {
         survey.setSaved(false);
     }
 
-    public static void editStation(Survey survey, Station toEdit, Station edited) {
+    public void editStation(Station toEdit, Station edited) {
 
         boolean weAreRenamingAStation = ! edited.getName().equals(toEdit);
         if (weAreRenamingAStation) {
@@ -167,7 +184,7 @@ public class SurveyUpdater {
         } else {
             Leg referringLeg = survey.getReferringLeg(toEdit);
             Leg editedLeg = new Leg(referringLeg, edited);
-            editLeg(survey, referringLeg, editedLeg);
+            editLeg(referringLeg, editedLeg);
         }
 
         if (survey.getActiveStation() == toEdit) {
@@ -177,13 +194,13 @@ public class SurveyUpdater {
         survey.setSaved(false);
     }
 
-    public static void renameStation(Survey survey, Station station, String name) {
+    public void renameStation(Station station, String name) {
         Station renamed = new Station(station, name);
-        editStation(survey, station, renamed);
+        editStation(station, renamed);
     }
 
 
-    public static void deleteLeg(Survey survey, final Leg toDelete) {
+    public void deleteLeg(final Leg toDelete) {
         survey.undoLeg(toDelete);
     }
 
@@ -278,7 +295,7 @@ public class SurveyUpdater {
     }
 
 
-    public static void reverseLeg(Survey survey, final Station toReverse) {
+    public void reverseLeg(final Station toReverse) {
         Log.d("reversing " + toReverse.getName());
         SurveyTools.traverse(
             survey,

@@ -47,6 +47,8 @@ public class SurveyManager {
         /*SharedPreferences preferences =
                 context.getSharedPreferences(Context.MODE_PRIVATE);*/
 
+        SurveyUpdater updater = new SurveyUpdater(currentSurvey, context);
+
         if (legs.size() > 0) {
 
             SharedPreferences preferences =
@@ -57,7 +59,7 @@ public class SurveyManager {
                 legs = reverseLegs(legs);
             }
 
-            SurveyUpdater.update(currentSurvey, legs);
+            updater.update(legs);
 
 
             try {

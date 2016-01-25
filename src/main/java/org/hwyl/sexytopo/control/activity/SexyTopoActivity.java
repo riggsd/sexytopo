@@ -362,7 +362,7 @@ public abstract class SexyTopoActivity extends ActionBarActivity {
                 .setCancelable(false)
                 .setPositiveButton("Replace", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        Survey currentSurvey = TestSurveyCreator.create(10, 5);
+                        Survey currentSurvey = TestSurveyCreator.create(10, 5, SexyTopoActivity.this);
                         SurveyManager.getInstance(SexyTopoActivity.this).setCurrentSurvey(currentSurvey);
                     }
                 })

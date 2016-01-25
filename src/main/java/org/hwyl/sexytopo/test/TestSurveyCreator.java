@@ -1,5 +1,7 @@
 package org.hwyl.sexytopo.test;
 
+import android.content.Context;
+
 import org.hwyl.sexytopo.control.util.SurveyUpdater;
 import org.hwyl.sexytopo.model.survey.Leg;
 import org.hwyl.sexytopo.model.survey.Station;
@@ -16,17 +18,17 @@ public class TestSurveyCreator {
     private static Random random = new Random();
 
 
-    public static Survey create(int numStations, int numBranches) {
+    public static Survey create(int numStations, int numBranches, Context context) {
 
         Survey survey = new Survey("NewSurvey");
 
-        createBranch(survey, numStations);
+        createBranch(survey, numStations, context);
 
         for (int i = 0; i < numBranches; i++) {
             List<Station> stations = survey.getAllStations();
             Station active = getRandom(stations);
             survey.setActiveStation(active);
-            createBranch(survey, 3);
+            createBranch(survey, 3, context);
         }
 
         return survey;
@@ -35,7 +37,7 @@ public class TestSurveyCreator {
 
 
 
-    public static void createBranch(Survey survey, int numStations) {
+    public static void createBranch(Survey survey, int numStations, Context context) {
 
 
 
@@ -46,12 +48,13 @@ public class TestSurveyCreator {
             double bearing = 40 + random.nextInt(100);
             double inclination = -20 + random.nextInt(40);
 
+            SurveyUpdater updater = new SurveyUpdater(survey, context);
             Leg leg0 = new Leg(distance, bearing, inclination);
-            SurveyUpdater.update(survey, leg0);
+            updater.update(leg0);
             Leg leg1 = new Leg(distance, bearing, inclination);
-            SurveyUpdater.update(survey, leg1);
+            updater.update(leg1);
             Leg leg2 = new Leg(distance, bearing, inclination);
-            SurveyUpdater.update(survey, leg2);
+            updater.update(leg2);
         }
 
     }

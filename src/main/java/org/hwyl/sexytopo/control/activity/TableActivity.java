@@ -215,7 +215,8 @@ public class TableActivity extends SexyTopoActivity
 
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            SurveyUpdater.deleteLeg(getSurvey(), surveyEntry.getLeg());
+                            SurveyUpdater updater = new SurveyUpdater(getSurvey(), TableActivity.this);
+                            updater.deleteLeg(surveyEntry.getLeg());
                             syncTableWithSurvey();
                         }
                     })
