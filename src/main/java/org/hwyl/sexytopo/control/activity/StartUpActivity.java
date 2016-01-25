@@ -12,6 +12,7 @@ import org.hwyl.sexytopo.control.Log;
 import org.hwyl.sexytopo.control.SurveyManager;
 import org.hwyl.sexytopo.control.io.Loader;
 import org.hwyl.sexytopo.control.io.Util;
+import org.hwyl.sexytopo.control.util.MagneticDeclination;
 import org.hwyl.sexytopo.model.survey.Survey;
 
 public class StartUpActivity extends SexyTopoActivity {
@@ -87,8 +88,9 @@ public class StartUpActivity extends SexyTopoActivity {
 
         String defaultNameBase = getString(R.string.default_survey_name);
         String defaultName = Util.getNextDefaultSurveyName(defaultNameBase);
+        double declination = MagneticDeclination.getDeclination(this);
 
-        Survey survey = new Survey(defaultName);
+        Survey survey = new Survey(defaultName, declination);
 
         SharedPreferences.Editor editor = preferences.edit();
         editor.putString(SexyTopo.ACTIVE_SURVEY_NAME, defaultName);

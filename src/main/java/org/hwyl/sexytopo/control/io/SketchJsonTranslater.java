@@ -186,7 +186,7 @@ public class SketchJsonTranslater {
         Station station = survey.getStationByName(stationdId);
 
         CrossSectionDetail crossSectionDetail =
-                new CrossSectionDetail(new CrossSection(station, angle), position);
+                new CrossSectionDetail(new CrossSection(survey, station, angle), position);
 
         return crossSectionDetail;
     }

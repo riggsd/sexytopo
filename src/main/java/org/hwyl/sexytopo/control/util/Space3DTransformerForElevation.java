@@ -2,12 +2,17 @@ package org.hwyl.sexytopo.control.util;
 
 import org.hwyl.sexytopo.model.graph.Coord3D;
 import org.hwyl.sexytopo.model.survey.Leg;
+import org.hwyl.sexytopo.model.survey.Survey;
 
 /**
  * Created by rls on 26/07/14.
  */
 public class Space3DTransformerForElevation  extends Space3DTransformer {
 
+
+    public Space3DTransformerForElevation(Survey survey) {
+        super(survey);
+    }
 
     public Coord3D transform(Coord3D start, Leg leg) {
         double r = leg.getDistance();

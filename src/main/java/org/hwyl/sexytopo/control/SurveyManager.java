@@ -36,11 +36,13 @@ public class SurveyManager {
 
     private LocalBroadcastManager broadcastManager;
 
-    private static Survey currentSurvey = new Survey("CHANGETHIS"); // FIXME, create elsewhere
+    private Survey currentSurvey = null;
+
 
     public SurveyManager(Context context) {
         this.context = context;
     }
+
 
     public void updateSurvey(List<Leg> legs) {
 

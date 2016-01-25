@@ -39,7 +39,9 @@ public class CompassExporter {
         sb.append(String.format("SURVEY NAME: %s\r\n", survey.getName()));
         sb.append(String.format("SURVEY DATE: %s\tCOMMENT: \r\n", surveyDate));
         sb.append("SURVEY TEAM:\r\n\r\n");
-        sb.append("DECLINATION: 0.00\tFORMAT: DMMDLRUDLADNF\tCORRECTIONS: 0.00 0.00 0.00\r\n");
+        sb.append(String.format(
+                "DECLINATION: %.3f\tFORMAT: DMMDLRUDLADNF\tCORRECTIONS: 0.00 0.00 0.00\r\n",
+                survey.getDeclination()));
         sb.append("\r\n");
         sb.append("FROM\tTO\tLENGTH\tBEARING\tINC\tLEFT\tUP\tDOWN\tRIGHT\tFLAGS\tCOMMENTS\r\n");
         sb.append("\r\n");

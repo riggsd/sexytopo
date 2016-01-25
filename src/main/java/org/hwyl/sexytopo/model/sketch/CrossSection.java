@@ -10,6 +10,7 @@ import org.hwyl.sexytopo.model.graph.Line;
 import org.hwyl.sexytopo.model.graph.Space;
 import org.hwyl.sexytopo.model.survey.Leg;
 import org.hwyl.sexytopo.model.survey.Station;
+import org.hwyl.sexytopo.model.survey.Survey;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,14 +20,17 @@ import java.util.Set;
  */
 public class CrossSection {
 
+    private final Survey survey;
     private final Station station;
     private final double angle;
 
-    private static Space3DTransformer transformer = new Space3DTransformer();
+    private Space3DTransformer transformer;
 
-    public CrossSection(Station station, double angle) {
+    public CrossSection(Survey survey, Station station, double angle) {
+        this.survey = survey;
         this.station = station;
         this.angle = angle;
+        this.transformer  = new Space3DTransformer(survey);
     }
 
     public Space<Coord2D> getProjection() {

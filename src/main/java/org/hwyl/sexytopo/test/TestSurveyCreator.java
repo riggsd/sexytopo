@@ -18,8 +18,7 @@ public class TestSurveyCreator {
 
     public static Survey create(int numStations, int numBranches) {
 
-        Survey survey = new Survey("NewSurvey");
-
+        Survey survey = new Survey("NewSurvey", 0.0);
         createBranch(survey, numStations);
 
         for (int i = 0; i < numBranches; i++) {
@@ -37,11 +36,7 @@ public class TestSurveyCreator {
 
     public static void createBranch(Survey survey, int numStations) {
 
-
-
         for (int i = 0; i < numStations; i++) {
-
-
             double distance = 5 + random.nextInt(10);
             double bearing = 40 + random.nextInt(100);
             double inclination = -20 + random.nextInt(40);

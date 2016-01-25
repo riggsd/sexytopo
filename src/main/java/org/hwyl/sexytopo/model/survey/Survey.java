@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 
+
 /**
  * Created by rls on 16/07/14.
  */
@@ -17,21 +18,36 @@ public class Survey {
     public static final Station NULL_STATION = new Station("-");
 
     private String name;
+    private double declination = 0.0;
 
     private Sketch planSketch = new Sketch();
     private Sketch elevationSketch = new Sketch();
 
 
-    private Station origin = new Station(StationNamer.generateOriginName());
+    private Station origin;
     private Station activeStation = origin;
 
     private boolean isSaved = true;
 
     private Stack<UndoEntry> undoStack = new Stack<>();
 
-    public Survey(String name) {
+
+//    public Survey(String name) {
+//        this(name, 0.0);
+//    }
+
+    public Survey(String name, double declination) {
+        if (declination < -180 || declination > 180) {
+            throw new IllegalArgumentException(
+                    "Declination should be between 180 and -180; actual=" + declination);
+        }
+
         this.name = name;
+        this.declination = declination;
+        this.origin = new Station(StationNamer.generateOriginName());
+        setActiveStation(this.origin);
     }
+
 
     public String getName() {
         return name;
@@ -39,6 +55,19 @@ public class Survey {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public double getDeclination() {
+        return declination;
+    }
+
+    public void setDeclination(double declination) {
+        // TODO: should declination be mutable? we need to modify every Leg if updated.
+        this.declination = declination;
+    }
+
+    public double getTrueBearing(Leg leg) {
+        return (leg.getBearing() - declination) % 360;
     }
 
     public void setActiveStation(Station activeStation) {

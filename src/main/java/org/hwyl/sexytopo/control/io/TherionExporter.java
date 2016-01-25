@@ -25,14 +25,13 @@ public class TherionExporter {
 
         String text = "TRIP\n";
         text += "DATE 1970-01-01\n";
-        text += "DECLINATION\t0.00\n";
+        text += String.format("DECLINATION\t%.3f\n", survey.getDeclination());
 
         text += exportData(survey) + "\n";
 
         text += exportPlan(survey) + "\n";
 
         text += exportExtendedElevation(survey);
-
 
         return text;
     }

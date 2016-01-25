@@ -5,6 +5,7 @@ import android.test.InstrumentationTestCase;
 import org.hwyl.sexytopo.control.util.Space3DTransformer;
 import org.hwyl.sexytopo.model.survey.Leg;
 import org.hwyl.sexytopo.model.graph.Coord3D;
+import org.hwyl.sexytopo.model.survey.Survey;
 
 /**
  * Created by rls on 28/07/14.
@@ -20,8 +21,9 @@ public class SketchJsonTransformerTest extends InstrumentationTestCase {
 */
 
     public void testTransform1MNorth() {
+        Survey survey = new Survey("", 0.0);
         Leg north1MLeg = new Leg(1, 0, 0);
-        Coord3D result = new Space3DTransformer().transform(Coord3D.ORIGIN, north1MLeg);
+        Coord3D result = new Space3DTransformer(survey).transform(Coord3D.ORIGIN, north1MLeg);
         Coord3D expected = new Coord3D(0, 1, 0);
         assertEquals(expected, result);
     }

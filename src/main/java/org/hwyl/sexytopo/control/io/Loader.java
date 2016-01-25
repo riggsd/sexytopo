@@ -30,8 +30,7 @@ public class Loader {
             throw new IllegalArgumentException("Empty save file");
         }
 
-        Survey survey = new Survey(name);
-        parse(text, survey);
+        Survey survey = parse(text, name);
 
         String planPath = Util.getPathForSurveyFile(survey.getName(), SexyTopo.PLAN_SKETCH_EXTENSION);
         if (Util.doesFileExist(planPath)) {
@@ -71,21 +70,25 @@ public class Loader {
         return text.toString();
     }
 
-    private static void parse(String text, Survey survey) {
+    private static Survey parse(String text, String name) {
 
         Map<String, Station> nameToStation = new HashMap<>();
 
+        Survey survey = new Survey(name, 0.0);  // FIXME
         Station origin = survey.getOrigin();
         nameToStation.put(origin.getName(), origin);
 
         String[] lines = text.split("\n");
         for (String line : lines) {
-            if (line.trim().equals("")) {
+            line = line.trim();
+            if (line.isEmpty()) {
                 continue;
             }
-            String[] fields = line.trim().split("\t");
+            String[] fields = line.split("\\s+");
             addLegToSurvey(survey, nameToStation, fields);
         }
+
+        return survey;
     }
 
     private static void addLegToSurvey(Survey survey,

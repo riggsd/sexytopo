@@ -73,8 +73,8 @@ public class SurveyStats {
     }
 
     public static double calcHeightRange(Survey survey) {
-        Space3DTransformer transformer = new Space3DTransformer();
-        Space<Coord3D> space = transformer.transformTo3D(survey);
+        Space3DTransformer transformer = new Space3DTransformer(survey);
+        Space<Coord3D> space = transformer.transformTo3D();
         Map<Station, Coord3D> stationsToCoords = space.getStationMap();
 
         if (stationsToCoords.size() <= 1) {

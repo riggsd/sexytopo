@@ -34,16 +34,14 @@ public enum Projection2D {
         }
     };
 
-    private static Space3DTransformer space3DTransformer =
-            new Space3DTransformer();
-    private static Space3DTransformerForElevation space3DTransformerForElevation =
-            new Space3DTransformerForElevation();
 
     private Space<Coord3D> transform(Survey survey) {
         if (this == EXTENDED_ELEVATION) {
-            return space3DTransformerForElevation.transformTo3D(survey);
+            Space3DTransformerForElevation transformer = new Space3DTransformerForElevation(survey);
+            return transformer.transformTo3D();
         } else {
-            return space3DTransformer.transformTo3D(survey);
+            Space3DTransformer transformer = new Space3DTransformer(survey);
+            return transformer.transformTo3D();
         }
     }
 

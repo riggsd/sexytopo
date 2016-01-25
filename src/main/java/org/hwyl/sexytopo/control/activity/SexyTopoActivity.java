@@ -26,6 +26,7 @@ import org.hwyl.sexytopo.control.io.Loader;
 import org.hwyl.sexytopo.control.io.Saver;
 import org.hwyl.sexytopo.control.io.TherionExporter;
 import org.hwyl.sexytopo.control.io.Util;
+import org.hwyl.sexytopo.control.util.MagneticDeclination;
 import org.hwyl.sexytopo.model.survey.Survey;
 import org.hwyl.sexytopo.test.TestSurveyCreator;
 
@@ -255,7 +256,8 @@ public abstract class SexyTopoActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         Editable value = input.getText();
                         String name = value.toString();
-                        Survey survey = new Survey(name);
+                        double declination = MagneticDeclination.getDeclination(SexyTopoActivity.this);
+                        Survey survey = new Survey(name, declination);
                         setSurvey(survey);
                     }
                 }).setNegativeButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
